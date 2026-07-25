@@ -50,6 +50,60 @@ export function Hero() {
     };
   }, []);
 
+  // --- SCROLL SNAP LOGIC ---
+  // Snap points (in multiples of windowHeight):
+  //   0   = Hero
+  //   0.5 = Bio/About (locks here no matter how hard user scrolls)
+  //   4.6 = Skills section
+  useEffect(() => {
+    if (windowHeight === 1000) return; // wait until real windowHeight is set
+
+    const BIO_SNAP    = Math.round(windowHeight * 0.5);
+    const SKILLS_SNAP = Math.round(windowHeight * 4.6);
+    const SNAP_ZONE   = Math.round(windowHeight * 0.3); // within 30vh counts as "at a snap point"
+
+    let snapTimeout: ReturnType<typeof setTimeout> | null = null;
+    let isSnapping = false;
+
+    const snapTo = (y: number) => {
+      isSnapping = true;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+      // Unlock after animation completes
+      setTimeout(() => { isSnapping = false; }, 800);
+    };
+
+    const onScroll = () => {
+      if (isSnapping) return;
+      if (snapTimeout) clearTimeout(snapTimeout);
+
+      snapTimeout = setTimeout(() => {
+        const sy = window.scrollY;
+
+        // Zone 1: User is approaching or inside Bio section → lock to Bio
+        if (sy > windowHeight * 0.1 && sy < SKILLS_SNAP - SNAP_ZONE) {
+          if (Math.abs(sy - BIO_SNAP) > 10) {
+            snapTo(BIO_SNAP);
+          }
+          return;
+        }
+
+        // Zone 2: User scrolled past Bio toward Skills → lock to Skills
+        if (sy >= SKILLS_SNAP - SNAP_ZONE && sy < SKILLS_SNAP + SNAP_ZONE) {
+          if (Math.abs(sy - SKILLS_SNAP) > 10) {
+            snapTo(SKILLS_SNAP);
+          }
+        }
+      }, 50); // 50ms debounce - fires almost immediately after scroll stops
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (snapTimeout) clearTimeout(snapTimeout);
+    };
+  }, [windowHeight]);
+  // --- END SCROLL SNAP ---
+
 
   const heroOpacity = useTransform(scrollY, [0, windowHeight * 0.4], [1, 0]);
   const heroScale = useTransform(scrollY, [0, windowHeight * 0.4], [1, 0.85]);
