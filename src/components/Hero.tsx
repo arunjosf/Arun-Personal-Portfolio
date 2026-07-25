@@ -51,21 +51,18 @@ export function Hero() {
   }, []);
 
   // --- SCROLL SNAP LOGIC ---
-  // 3 snap points: Hero (0), Bio (0.5vh), Skills (2.0vh)
+  // Snap points: Hero (0), Bio (0.7vh = fully visible), Skills (2.0vh)
   useEffect(() => {
     if (windowHeight === 1000) return;
 
-    const HERO_SNAP   = 0;
-    const BIO_SNAP    = Math.round(windowHeight * 0.5);
+    const BIO_SNAP    = Math.round(windowHeight * 0.7);
     const SKILLS_SNAP = Math.round(windowHeight * 2.0);
 
     let snapTimeout: ReturnType<typeof setTimeout> | null = null;
     let isSnapping = false;
-    let lastSnap = 0; // track which snap point we are at
 
     const snapTo = (y: number) => {
       isSnapping = true;
-      lastSnap = y;
       window.scrollTo({ top: y, behavior: 'smooth' });
       setTimeout(() => { isSnapping = false; }, 900);
     };
@@ -77,14 +74,14 @@ export function Hero() {
       snapTimeout = setTimeout(() => {
         const sy = window.scrollY;
 
-        // Anywhere between Hero and Bio -> snap to Bio
-        if (sy > windowHeight * 0.05 && sy < windowHeight * 1.5) {
+        // Anywhere between Hero and midpoint -> snap to Bio
+        if (sy > windowHeight * 0.05 && sy < windowHeight * 1.4) {
           if (Math.abs(sy - BIO_SNAP) > 5) snapTo(BIO_SNAP);
           return;
         }
 
-        // Anywhere between Bio and Skills -> snap to Skills
-        if (sy >= windowHeight * 1.5 && sy < windowHeight * 3.0) {
+        // Anywhere between midpoint and Skills -> snap to Skills
+        if (sy >= windowHeight * 1.4 && sy < windowHeight * 3.0) {
           if (Math.abs(sy - SKILLS_SNAP) > 5) snapTo(SKILLS_SNAP);
         }
       }, 80);
@@ -99,29 +96,31 @@ export function Hero() {
   // --- END SCROLL SNAP ---
 
 
-  // Scroll animations tied to the 3 snap points: 0, 0.5vh, 2.0vh
-  const heroOpacity = useTransform(scrollY, [0, windowHeight * 0.4], [1, 0]);
-  const heroScale   = useTransform(scrollY, [0, windowHeight * 0.4], [1, 0.85]);
+  // Scroll animations — Bio starts fading in early to prevent blank gap
+  const heroOpacity = useTransform(scrollY, [0, windowHeight * 0.5], [1, 0]);
+  const heroScale   = useTransform(scrollY, [0, windowHeight * 0.5], [1, 0.85]);
 
+  // Bio: starts fading in at 0.3vh, fully visible by 0.7vh (matches BIO_SNAP)
+  // stays fully visible until 1.8vh, fades out by 2.0vh
   const bioOpacity = useTransform(scrollY,
-    [windowHeight * 0.4, windowHeight * 0.6, windowHeight * 1.8, windowHeight * 2.0],
+    [windowHeight * 0.3, windowHeight * 0.7, windowHeight * 1.8, windowHeight * 2.0],
     [0, 1, 1, 0]
   );
   const bioScale = useTransform(scrollY,
-    [windowHeight * 0.4, windowHeight * 1.0, windowHeight * 2.0],
+    [windowHeight * 0.3, windowHeight * 1.0, windowHeight * 2.0],
     [1, 1, 0.85]
   );
 
   const frontendOpacity = useTransform(scrollY, [windowHeight * 2.0, windowHeight * 2.3], [0, 1]);
   const frontendScale   = useTransform(scrollY, [windowHeight * 2.0, windowHeight * 2.3], [1, 1]);
 
-  // Logo loop: desktop fades out as Bio fades out; mobile fades out as Hero fades out (never shows on Bio)
+  // Mobile: logo loop gone before Bio appears. Desktop: fades with Bio.
   const loopOpacityDesktop = useTransform(scrollY, [windowHeight * 1.8, windowHeight * 2.0], [1, 0]);
-  const loopOpacityMobile  = useTransform(scrollY, [windowHeight * 0.2, windowHeight * 0.4], [1, 0]);
+  const loopOpacityMobile  = useTransform(scrollY, [windowHeight * 0.1, windowHeight * 0.3], [1, 0]);
   const loopOpacity = isMobile ? loopOpacityMobile : loopOpacityDesktop;
 
-  const heroPointerEvents    = useTransform(heroOpacity,    v => v > 0.5 ? 'auto' : 'none');
-  const bioPointerEvents     = useTransform(bioOpacity,     v => v > 0.5 ? 'auto' : 'none');
+  const heroPointerEvents     = useTransform(heroOpacity,     v => v > 0.1 ? 'auto' : 'none');
+  const bioPointerEvents      = useTransform(bioOpacity,      v => v > 0.5 ? 'auto' : 'none');
   const frontendPointerEvents = useTransform(frontendOpacity, v => v > 0.5 ? 'auto' : 'none');
 
   return (
