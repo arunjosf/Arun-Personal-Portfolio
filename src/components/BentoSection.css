@@ -1,0 +1,146 @@
+.partner-container {
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  background-color: transparent;
+  padding: 0 5%;
+  box-sizing: border-box;
+}
+
+.partner-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-left {
+  flex: 1;
+  padding: 4rem 0;
+  position: relative;
+}
+
+.partner-right {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-overline {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.partner-title {
+  font-size: clamp(4rem, 8vw, 8rem);
+  font-weight: 900;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.partner-item {
+  padding: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.partner-item:last-child {
+}
+
+.partner-item:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.partner-num {
+  font-family: monospace;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  transition: opacity 0.3s ease, color 0.3s ease;
+}
+
+.partner-item:hover .partner-num {
+  opacity: 1;
+  color: var(--text-primary);
+}
+
+.partner-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.partner-item-title {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+}
+
+.partner-item-desc {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.partner-right {
+  flex: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop Layout */
+@media (min-width: 900px) {
+  .partner-wrapper {
+    flex-direction: row;
+  }
+
+  .partner-left {
+    padding: 0 4rem 0 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .partner-right {
+    padding-top: calc(50vh - 150px);
+    padding-bottom: calc(50vh - 150px);
+  }
+
+  .partner-item {
+    padding: 4rem;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+
+    .partner-num {
+    font-size: 1.25rem;
+    padding-top: 0.25rem; 
+  }
+}
+
+/* Mobile Overrides */
+@media (max-width: 899px) {
+  .partner-left {
+    padding: 2rem 0 1rem 0;
+  }
+  .partner-item {
+    padding: 1.5rem 0;
+  }
+}

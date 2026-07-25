@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -23,4 +24,267 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* === MIGRATED PORTFOLIO STYLES === */
+:root {
+  --bg-color: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --accent-color: #d32f2f;
+  --grid-color: rgba(0, 0, 0, 0.05);
+  --glow-color: rgba(211, 47, 47, 0.05);
+  --spotlight-radius: 400px;
+  --card-bg: rgba(245, 245, 245, 0.8);
+  --card-glow: rgba(0, 0, 0, 0.01);
+}
+
+.dark {
+  --bg-color: #0d0404;
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0a0;
+  --accent-color: #ff5252;
+  --grid-color: rgba(255, 60, 60, 0.1);
+  --glow-color: rgba(255, 60, 60, 0.15);
+  --spotlight-radius: 800px;
+  --card-bg: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  --card-glow: rgba(255, 255, 255, 0.3);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Background grid that spans wider than viewport to allow mouse panning */
+.bg-grid {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image: 
+    linear-gradient(to right, var(--grid-color) 2px, transparent 2px),
+    linear-gradient(to bottom, var(--grid-color) 2px, transparent 2px);
+  background-size: 100px 100px; /* Larger squares like reference */
+  z-index: 0;
+  pointer-events: none;
+  transition: transform 0.1s ease-out;
+  mask-image: radial-gradient(black, transparent);
+  -webkit-mask-image: radial-gradient(black, transparent);
+}
+
+/* Add a central deep red glow behind the grid */
+.bg-grid::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse at center, var(--glow-color) 0%, transparent 80%);
+  pointer-events: none;
+}
+
+.intro-container {
+  position: fixed;
+  inset: 0;
+  background-color: var(--bg-color);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.code-typing-area {
+  position: absolute;
+  top: 20%;
+  left: 10%;
+  width: 80%;
+  height: 60%;
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.eyes-mask {
+  z-index: 1;
+}
+
+.eyes-mask img {
+  clip-path: inset(25% 20% 55% 20%);
+  filter: grayscale(100%) contrast(150%);
+  opacity: 0.85;
+}
+
+.container {
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5%;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 100;
+  background: none;
+  border: 1px solid var(--grid-color);
+  color: var(--text-primary);
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--grid-color);
+}
+
+.projects-section {
+  padding-top: 20vh;
+}
+
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  z-index: 100;
+  background: none;
+  border: 1px solid var(--grid-color);
+  color: var(--text-primary);
+  padding: 0.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+  background: var(--grid-color);
+}
+
+.hero-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: 
+    "arun subtitle"
+    "joseph joseph";
+  align-items: center;
+  column-gap: 4vw;
+  row-gap: 0;
+}
+.hero-title-arun { grid-area: arun; margin: 0; }
+.hero-title-joseph { grid-area: joseph; margin: 0; margin-top: -0.05em; }
+.hero-subtitle { grid-area: subtitle; margin-top: 1vh; }
+
+
+@media (max-width: 768px) {
+  .modal-live-btn {
+    font-size: 1rem !important;
+    padding: 1rem 2rem !important;
+  }
+  .modal-tech-stack {
+    font-size: 0.75rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+  .modal-overview-text {
+    font-size: 1rem !important;
+  }
+  .modal-heading {
+    font-size: 1rem !important;
+  }
+  .desktop-nav-link {
+    text-align: left;
+  }
+  .modal-video-container {
+    float: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-bottom: 1.5rem !important;
+    display: block !important;
+  }
+  .modal-close-btn {
+    margin-right: 0;
+  }
+  .modal-header-container {
+    padding: 5rem 2rem 2rem 5vw !important;
+  }
+
+  .hero-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "arun"
+      "joseph"
+      "subtitle";
+    row-gap: 0;
+  }
+  #hero-container {
+    padding-top: 25vh !important;
+  }
+  .hero-title-arun {
+    font-size: 16vw !important;
+  }
+  .hero-title-joseph {
+    margin-top: 1vh !important;
+    font-size: 16vw !important;
+  }
+  .hero-subtitle {
+    margin-top: 6vh !important;
+  }
+  
+  .container {
+    padding: 0 2vw !important;
+  }
+
+  .bio-section {
+    padding-top: 5vh !important;
+  }
+  .bio-text {
+    font-size: 1.75rem !important;
+  }
+  .bio-stats-container {
+    gap: 1.5rem !important;
+  }
+  
+  .theme-toggle {
+    top: 1rem !important;
+    right: 1rem !important;
+  }
+  .menu-toggle {
+    display: flex !important;
+    top: 1rem !important;
+    left: 1rem !important;
+  }
+  
+  .projects-section {
+    padding-top: 5vh !important;
+    overflow-x: hidden !important;
+  }
+  
+  .partner-container,
+  .services-container,
+  .chat-section {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
 }
