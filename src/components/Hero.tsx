@@ -70,7 +70,7 @@ export function Hero() {
 
   // 4. Logo Loop opacity
   const loopOpacityDesktop = useTransform(scrollY, [windowHeight * 1.4, windowHeight * 1.6], [1, 0]);
-  const loopOpacityMobile = useTransform(scrollY, [windowHeight * 0.2, windowHeight * 0.4], [1, 0]);
+  const loopOpacityMobile = useTransform(scrollY, [windowHeight * 0.1, windowHeight * 0.35], [1, 0]);
   const loopOpacity = isMobile ? loopOpacityMobile : loopOpacityDesktop;
 
   const heroPointerEvents = useTransform(heroOpacity, v => v > 0.5 ? 'auto' : 'none');
@@ -302,7 +302,7 @@ export function Hero() {
         <motion.div 
           className="logoloop-layer"
           style={{ 
-            position: 'absolute', bottom: '20px', left: 0, right: 0, height: '80px', zIndex: 15,
+            position: 'absolute', bottom: isMobile ? '70px' : '20px', left: 0, right: 0, height: '80px', zIndex: 15,
             opacity: loopOpacity, pointerEvents: 'none'
           }}
         >
