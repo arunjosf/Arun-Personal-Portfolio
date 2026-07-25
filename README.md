@@ -2,7 +2,7 @@
 
 A high-performance, responsive personal portfolio built with modern web technologies. Designed to showcase enterprise architecture, full-stack development skills, and seamless user experiences.
 
-## 🚀 Tech Stack
+## Tech Stack
 
 This project is built using a modern, scalable frontend stack:
 
@@ -14,7 +14,7 @@ This project is built using a modern, scalable frontend stack:
 * **3D/Graphics:** [Three.js](https://threejs.org/) & React Three Fiber
 * **Email Integration:** [EmailJS](https://www.emailjs.com/) 
 
-## ✨ Key Features
+## Key Features
 
 * **High Performance:** Server-Side Rendering (SSR) and optimized asset delivery via Next.js.
 * **Fluid Animations:** Complex scroll-triggered animations and page transitions using Framer Motion.
@@ -22,7 +22,7 @@ This project is built using a modern, scalable frontend stack:
 * **Modern UI/UX:** Glassmorphism, custom SVG dispersion filters, and interactive 3D particle backgrounds.
 * **Direct Messaging:** Seamless integrated contact form with live typing effects and real-time validation.
 
-## 💻 Getting Started
+## Getting Started
 
 To run this project locally on your machine:
 
