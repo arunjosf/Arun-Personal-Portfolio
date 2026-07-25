@@ -51,25 +51,23 @@ export function Hero() {
   }, []);
 
   // --- SCROLL SNAP LOGIC ---
-  // Snap points (in multiples of windowHeight):
-  //   0   = Hero
-  //   0.5 = Bio/About (locks here no matter how hard user scrolls)
-  //   4.6 = Skills section
+  // 3 snap points: Hero (0), Bio (0.5vh), Skills (2.0vh)
   useEffect(() => {
-    if (windowHeight === 1000) return; // wait until real windowHeight is set
+    if (windowHeight === 1000) return;
 
+    const HERO_SNAP   = 0;
     const BIO_SNAP    = Math.round(windowHeight * 0.5);
-    const SKILLS_SNAP = Math.round(windowHeight * 4.6);
-    const SNAP_ZONE   = Math.round(windowHeight * 0.3); // within 30vh counts as "at a snap point"
+    const SKILLS_SNAP = Math.round(windowHeight * 2.0);
 
     let snapTimeout: ReturnType<typeof setTimeout> | null = null;
     let isSnapping = false;
+    let lastSnap = 0; // track which snap point we are at
 
     const snapTo = (y: number) => {
       isSnapping = true;
+      lastSnap = y;
       window.scrollTo({ top: y, behavior: 'smooth' });
-      // Unlock after animation completes
-      setTimeout(() => { isSnapping = false; }, 800);
+      setTimeout(() => { isSnapping = false; }, 900);
     };
 
     const onScroll = () => {
@@ -79,21 +77,17 @@ export function Hero() {
       snapTimeout = setTimeout(() => {
         const sy = window.scrollY;
 
-        // Zone 1: User is approaching or inside Bio section → lock to Bio
-        if (sy > windowHeight * 0.1 && sy < SKILLS_SNAP - SNAP_ZONE) {
-          if (Math.abs(sy - BIO_SNAP) > 10) {
-            snapTo(BIO_SNAP);
-          }
+        // Anywhere between Hero and Bio -> snap to Bio
+        if (sy > windowHeight * 0.05 && sy < windowHeight * 1.5) {
+          if (Math.abs(sy - BIO_SNAP) > 5) snapTo(BIO_SNAP);
           return;
         }
 
-        // Zone 2: User scrolled past Bio toward Skills → lock to Skills
-        if (sy >= SKILLS_SNAP - SNAP_ZONE && sy < SKILLS_SNAP + SNAP_ZONE) {
-          if (Math.abs(sy - SKILLS_SNAP) > 10) {
-            snapTo(SKILLS_SNAP);
-          }
+        // Anywhere between Bio and Skills -> snap to Skills
+        if (sy >= windowHeight * 1.5 && sy < windowHeight * 3.0) {
+          if (Math.abs(sy - SKILLS_SNAP) > 5) snapTo(SKILLS_SNAP);
         }
-      }, 50); // 50ms debounce - fires almost immediately after scroll stops
+      }, 80);
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -105,31 +99,34 @@ export function Hero() {
   // --- END SCROLL SNAP ---
 
 
+  // Scroll animations tied to the 3 snap points: 0, 0.5vh, 2.0vh
   const heroOpacity = useTransform(scrollY, [0, windowHeight * 0.4], [1, 0]);
-  const heroScale = useTransform(scrollY, [0, windowHeight * 0.4], [1, 0.85]);
+  const heroScale   = useTransform(scrollY, [0, windowHeight * 0.4], [1, 0.85]);
 
-  const bioOpacity = useTransform(scrollY, 
-    [windowHeight * 0.4, windowHeight * 0.6, windowHeight * 4.4, windowHeight * 4.6], 
+  const bioOpacity = useTransform(scrollY,
+    [windowHeight * 0.4, windowHeight * 0.6, windowHeight * 1.8, windowHeight * 2.0],
     [0, 1, 1, 0]
   );
-  const bioScale = useTransform(scrollY, 
-    [windowHeight * 0.4, windowHeight * 1.5, windowHeight * 4.6], 
+  const bioScale = useTransform(scrollY,
+    [windowHeight * 0.4, windowHeight * 1.0, windowHeight * 2.0],
     [1, 1, 0.85]
   );
 
-  const frontendOpacity = useTransform(scrollY, [windowHeight * 4.6, windowHeight * 5.0], [0, 1]);
-  const frontendScale = useTransform(scrollY, [windowHeight * 4.6, windowHeight * 5.0], [1, 1]);
+  const frontendOpacity = useTransform(scrollY, [windowHeight * 2.0, windowHeight * 2.3], [0, 1]);
+  const frontendScale   = useTransform(scrollY, [windowHeight * 2.0, windowHeight * 2.3], [1, 1]);
 
-  const loopOpacityDesktop = useTransform(scrollY, [windowHeight * 4.4, windowHeight * 4.6], [1, 0]);
-  const loopOpacityMobile = useTransform(scrollY, [windowHeight * 0.4, windowHeight * 0.6], [1, 0]);
+  // Logo loop: desktop fades out as Bio fades out; mobile fades out as Hero fades out (never shows on Bio)
+  const loopOpacityDesktop = useTransform(scrollY, [windowHeight * 1.8, windowHeight * 2.0], [1, 0]);
+  const loopOpacityMobile  = useTransform(scrollY, [windowHeight * 0.2, windowHeight * 0.4], [1, 0]);
   const loopOpacity = isMobile ? loopOpacityMobile : loopOpacityDesktop;
 
-  const heroPointerEvents = useTransform(heroOpacity, v => v > 0.5 ? 'auto' : 'none');
-  const bioPointerEvents = useTransform(bioOpacity, v => v > 0.5 ? 'auto' : 'none');
+  const heroPointerEvents    = useTransform(heroOpacity,    v => v > 0.5 ? 'auto' : 'none');
+  const bioPointerEvents     = useTransform(bioOpacity,     v => v > 0.5 ? 'auto' : 'none');
   const frontendPointerEvents = useTransform(frontendOpacity, v => v > 0.5 ? 'auto' : 'none');
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: isMobile ? '1000vh' : '1000vh' }}>
+    // Total scroll height covers all 3 snap points with room for the Skills section scroll (4.5vh of skills)
+    <div style={{ position: 'relative', width: '100%', height: isMobile ? '700vh' : '700vh' }}>
       
       <div style={{ position: 'sticky', top: 0, width: '100%', height: '100vh', overflow: 'hidden' }}>
         
@@ -346,7 +343,7 @@ export function Hero() {
         >
       
 
-          <Toolkit scrollY={scrollY} windowHeight={windowHeight} thresholdMultiplier={4.6} />
+          <Toolkit scrollY={scrollY} windowHeight={windowHeight} thresholdMultiplier={2.0} />
         </motion.div>
 
         {/* LOGO LOOP LAYER (Unscaled) */}
