@@ -55,19 +55,19 @@ export function Hero() {
   const heroScale = useTransform(scrollY, [0, windowHeight * 0.4], [1, 0.85]);
 
   const bioOpacity = useTransform(scrollY, 
-    [windowHeight * 0.4, windowHeight * 0.6, windowHeight * 2.4, windowHeight * 2.6], 
+    [windowHeight * 0.4, windowHeight * 0.6, windowHeight * 4.4, windowHeight * 4.6], 
     [0, 1, 1, 0]
   );
   const bioScale = useTransform(scrollY, 
-    [windowHeight * 0.4, windowHeight * 1.5, windowHeight * 2.6], 
+    [windowHeight * 0.4, windowHeight * 1.5, windowHeight * 4.6], 
     [1, 1, 0.85]
   );
 
-  const frontendOpacity = useTransform(scrollY, [windowHeight * 2.6, windowHeight * 3.0], [0, 1]);
-  const frontendScale = useTransform(scrollY, [windowHeight * 2.6, windowHeight * 3.0], [1, 1]);
+  const frontendOpacity = useTransform(scrollY, [windowHeight * 4.6, windowHeight * 5.0], [0, 1]);
+  const frontendScale = useTransform(scrollY, [windowHeight * 4.6, windowHeight * 5.0], [1, 1]);
 
-  const loopOpacityDesktop = useTransform(scrollY, [windowHeight * 2.4, windowHeight * 2.6], [1, 0]);
-  const loopOpacityMobile = useTransform(scrollY, [windowHeight * 2.4, windowHeight * 2.6], [1, 0]);
+  const loopOpacityDesktop = useTransform(scrollY, [windowHeight * 4.4, windowHeight * 4.6], [1, 0]);
+  const loopOpacityMobile = useTransform(scrollY, [windowHeight * 0.4, windowHeight * 0.6], [1, 0]);
   const loopOpacity = isMobile ? loopOpacityMobile : loopOpacityDesktop;
 
   const heroPointerEvents = useTransform(heroOpacity, v => v > 0.5 ? 'auto' : 'none');
@@ -75,7 +75,7 @@ export function Hero() {
   const frontendPointerEvents = useTransform(frontendOpacity, v => v > 0.5 ? 'auto' : 'none');
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: isMobile ? '760vh' : '850vh' }}>
+    <div style={{ position: 'relative', width: '100%', height: isMobile ? '1000vh' : '1000vh' }}>
       
       <div style={{ position: 'sticky', top: 0, width: '100%', height: '100vh', overflow: 'hidden' }}>
         
@@ -292,7 +292,7 @@ export function Hero() {
         >
       
 
-          <Toolkit scrollY={scrollY} windowHeight={windowHeight} />
+          <Toolkit scrollY={scrollY} windowHeight={windowHeight} thresholdMultiplier={4.6} />
         </motion.div>
 
         {/* LOGO LOOP LAYER (Unscaled) */}

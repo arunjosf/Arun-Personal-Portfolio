@@ -89,8 +89,8 @@ const flattenedSkills = categories.flatMap((cat, catIndex) =>
   cat.skills.map(skill => ({ ...skill, categoryIndex: catIndex }))
 );
 
-const SkillItem = ({ skill, index, scrollY, scrollPerSkill, windowHeight, ITEM_HEIGHT_PX, isMobile }) => {
-  const targetScrollY = 2 * windowHeight + index * scrollPerSkill;
+const SkillItem = ({ skill, index, scrollY, scrollPerSkill, windowHeight, ITEM_HEIGHT_PX, isMobile, thresholdMultiplier }) => {
+  const targetScrollY = thresholdMultiplier * windowHeight + index * scrollPerSkill;
   
   const opacity = useTransform(
     scrollY, 
@@ -161,7 +161,7 @@ const SkillItem = ({ skill, index, scrollY, scrollPerSkill, windowHeight, ITEM_H
   );
 };
 
-export function Toolkit({ scrollY, windowHeight }) {
+export function Toolkit({ scrollY, windowHeight, thresholdMultiplier = 4.6 }) {
   const [activeSkillIndex, setActiveSkillIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -176,7 +176,7 @@ export function Toolkit({ scrollY, windowHeight }) {
   const scrollPerSkill = scrollDistance / Math.max(1, (flattenedSkills.length - 1));
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const threshold = 2 * windowHeight;
+    const threshold = thresholdMultiplier * windowHeight;
     const progress = latest - threshold;
     
     if (progress < 0) {
@@ -196,7 +196,7 @@ export function Toolkit({ scrollY, windowHeight }) {
 
   const rightColumnY = useTransform(
     scrollY,
-    [2 * windowHeight, 2 * windowHeight + scrollDistance],
+    [thresholdMultiplier * windowHeight, thresholdMultiplier * windowHeight + scrollDistance],
     [0, -(flattenedSkills.length - 1) * ITEM_HEIGHT_PX]
   );
 
@@ -312,6 +312,7 @@ export function Toolkit({ scrollY, windowHeight }) {
               windowHeight={windowHeight}
               ITEM_HEIGHT_PX={ITEM_HEIGHT_PX}
               isMobile={isMobile}
+              thresholdMultiplier={thresholdMultiplier}
             />
           ))}
         </motion.div>
