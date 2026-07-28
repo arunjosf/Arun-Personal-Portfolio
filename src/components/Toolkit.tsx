@@ -45,6 +45,8 @@ const categories = [
       { name: 'REST APIs', icon: <Globe size={24} /> },
       { name: 'SignalR', icon: <Radio size={24} /> },
       { name: 'MediatR', icon: <Layers size={24} /> },
+      { name: 'Azure Service Bus', icon: <Server size={24} /> },
+      { name: 'RabbitMQ', icon: <Layers size={24} /> },
       { name: 'CQRS', icon: <Cpu size={24} /> },
       { name: 'Unit Testing', icon: <Search size={24} /> },
     ]
