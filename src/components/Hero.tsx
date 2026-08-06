@@ -205,7 +205,7 @@ export function Hero() {
                     onMouseOut={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'var(--text-primary)'; }} >
                       Let's Talk
                     </button>
-                    <a href="/ARUN JOSEPH - ASP.NET and REACT Full-Stack Developer Resume.pdf" download="Arun_Joseph_Resume.pdf" style={{ 
+                    <a href="/ARUN JOSEPH_ASP.NET_FullStack_Developer_Resume.pdf" download="ARUN JOSEPH_ASP.NET_FullStack_Developer_Resume.pdf" style={{ 
                       backgroundColor: 'transparent', color: 'var(--text-primary)', padding: '12px 32px', border: '1px solid var(--text-primary)', 
                       borderRadius: '0px', fontWeight: '700', fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase', 
                       cursor: 'pointer', transition: 'all 0.3s ease', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center'

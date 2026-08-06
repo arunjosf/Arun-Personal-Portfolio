@@ -39,7 +39,6 @@ const MODAL_CSS = `
   .pm-next-card:hover .pm-next-inner{transform:scale(1.01)}
   .pm-next-inner{transition:transform .4s ease;width:100%}
   @media(max-width:768px){
-    .pm-modal-container { top: 75px !important; }
     .pm-meta-grid{grid-template-columns:1fr 1fr!important}
     .pm-vision-grid{grid-template-columns:1fr!important}
     .pm-roles-grid{grid-template-columns:1fr 1fr!important}
@@ -49,7 +48,8 @@ const MODAL_CSS = `
     .pm-colophon{flex-direction:column!important;align-items:flex-start!important}
     .pm-role-cell{border-right:none!important;border-bottom:1px solid rgba(150,150,150,.12)!important}
     .pm-stat-cell{border-right:none!important;border-bottom:1px solid rgba(150,150,150,.09)!important}
-    .pm-sticky-nav{top:0!important}
+    .pm-modal-container{padding-top:75px!important}
+    .pm-sticky-nav{top:75px!important}
   }
 `;
 
